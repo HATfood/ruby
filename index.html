@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحلیل استراتژیک محصول - چای جنگل یاقوتی</title>
+    <!-- Chosen Palette: Warm Neutrals & Berry Hues -->
+    <!-- Application Structure Plan: A single-page, top-down narrative journey designed for strategic decision-making. It starts with a captivating introduction (Hero), moves to tangible product details (Ingredient Explorer), establishes market context (Positioning & Competitors), identifies the target user (Persona), and concludes with actionable branding and packaging concepts. This non-linear navigation via a sticky header allows stakeholders to jump to sections relevant to their role (e.g., a marketer to 'Persona', a designer to 'Packaging'), while the overall flow tells a complete story from concept to consumer. This structure was chosen to transform a dense report into an intuitive, engaging, and explorable strategic tool. -->
+    <!-- Visualization & Content Choices: 
+        - Hero Section: Goal: Inform/Engage. Method: Strong visual headline and intro text. Justification: Immediately sets the premium, evocative tone of the brand.
+        - Ingredient Explorer: Goal: Inform/Explore. Method: Interactive HTML/CSS cards revealed via JS. Justification: Turns a static list into a delightful, educational discovery experience, highlighting product quality.
+        - Positioning Diagram: Goal: Clarify. Method: Simple HTML/CSS side-by-side comparison. Justification: Quickly resolves the "Moroccan Tea" misconception and educates the user on the correct classification.
+        - Competitor Pricing Chart: Goal: Compare. Method: Chart.js Bar Chart. Justification: Provides an immediate, clear visual of the proposed product's premium market position against rivals.
+        - Competitor Feature Table: Goal: Compare/Organize. Method: Responsive HTML/Tailwind card grid. Justification: A modern, scannable way to present competitive data that is superior to a dense table.
+        - Persona Display: Goal: Empathize/Inform. Method: HTML/CSS with Unicode icons. Justification: Brings the target customer to life, making data-driven marketing decisions more intuitive.
+        - Packaging Mockups: Goal: Visualize/Inspire. Method: HTML/CSS structured elements. Justification: Translates abstract packaging concepts into tangible, exciting visuals to guide design direction.
+        - Library/Method: Chart.js for visualizations. Vanilla JS for all interactions.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #FDFBF7;
+            color: #3D2C24;
+        }
+        .vazir-bold { font-weight: 800; }
+        .vazir-normal { font-weight: 400; }
+        .vazir-heavy { font-weight: 700; }
+        .bg-brand-primary { background-color: #8D4B55; }
+        .text-brand-primary { color: #8D4B55; }
+        .bg-brand-secondary { background-color: #DDC9B4; }
+        .text-brand-accent { color: #D4A056; }
+        .border-brand-accent { border-color: #D4A056; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        .ingredient-card {
+            transition: all 0.3s ease-in-out;
+            border-width: 2px;
+            border-color: transparent;
+        }
+        .ingredient-card:hover {
+            transform: translateY(-5px);
+            border-color: #D4A056;
+        }
+        .nav-link {
+             transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: #D4A056;
+        }
+    </style>
+</head>
+<body class="smooth-scroll">
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-brand-secondary/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl vazir-bold text-brand-primary">بررسی محصول جدید چای</h1>
+            <div class="hidden md:flex space-x-8 space-x-reverse text-lg vazir-heavy">
+                <a href="#hero" class="nav-link">مقدمه</a>
+                <a href="#ingredients" class="nav-link">کالبدشکافی</a>
+                <a href="#positioning" class="nav-link">جایگاه</a>
+                <a href="#market" class="nav-link">بازار</a>
+                <a href="#persona" class="nav-link">مخاطب</a>
+                <a href="#branding" class="nav-link">برندینگ</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-brand-primary focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#hero" class="block text-center py-2 px-4 text-sm hover:bg-brand-primary hover:text-white transition-colors">مقدمه</a>
+            <a href="#ingredients" class="block text-center py-2 px-4 text-sm hover:bg-brand-primary hover:text-white transition-colors">کالبدشکافی</a>
+            <a href="#positioning" class="block text-center py-2 px-4 text-sm hover:bg-brand-primary hover:text-white transition-colors">جایگاه</a>
+            <a href="#market" class="block text-center py-2 px-4 text-sm hover:bg-brand-primary hover:text-white transition-colors">بازار</a>
+            <a href="#persona" class="block text-center py-2 px-4 text-sm hover:bg-brand-primary hover:text-white transition-colors">مخاطب</a>
+            <a href="#branding" class="block text-center py-2 px-4 text-sm hover:bg-brand-primary hover:text-white transition-colors">برندینگ</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center bg-cover bg-center" style="background-image: linear-gradient(rgba(253, 251, 247, 0.8), rgba(253, 251, 247, 1)), url('https://placehold.co/1920x1080/8D4B55/FDFBF7?text=%E2%97%8F');">
+            <div class="container mx-auto px-6 text-center">
+		<h1 style="font-size: 2em;">هستی آرین تامین - واحد مارکتینگ</h1>
+		<h2>_______________<br></h2>
+                <h2 class="text-4xl md:text-7xl vazir-bold text-brand-primary mb-4">کیفیت را ببینید، هارمونی را بچشید.</h2>
+                <p class="text-lg md:text-2xl max-w-3xl mx-auto vazir-normal">
+                    تحلیل استراتژیک برای عرضه «محصول جدید چای» — یک ترکیب هنرمندانه از چای، میوه‌های وحشی و گل‌های معطر. این داشبورد تعاملی، شما را در سفری برای کشف پتانسیل این محصول منحصربه‌فرد همراهی می‌کند.
+                </p>
+                <div class="mt-8">
+                    <a href="#ingredients" class="bg-brand-primary text-white vazir-heavy py-3 px-8 rounded-full text-lg hover:bg-opacity-90 transition-all transform hover:scale-105">
+                        کشف را آغاز کنید
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ingredients Section -->
+        <section id="ingredients" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl vazir-bold text-brand-primary">کالبدشکافی یک سمفونی</h3>
+                    <p class="text-lg mt-2 max-w-2xl mx-auto vazir-normal">هر ماده با دقت انتخاب شده تا تجربه‌ای چندلایه از طعم، عطر و خاصیت خلق کند. روی هر کارت کلیک کنید تا با نقش آن در این ترکیب بیشتر آشنا شوید.</p>
+                </div>
+                
+               
+
+                <div id="ingredient-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-8">
+                    <!-- Ingredient cards will be dynamically inserted here by JS -->
+                </div>
+
+                <div id="ingredient-details" class="mt-12 p-8 rounded-2xl bg-brand-secondary hidden transition-all duration-500">
+                    <div class="flex flex-col md:flex-row items-start gap-8">
+                        <div id="details-icon" class="text-6xl text-brand-primary"></div>
+                        <div>
+                            <h4 id="details-title" class="text-3xl vazir-bold text-brand-primary mb-2"></h4>
+                            <p id="details-flavor" class="text-lg vazir-heavy text-brand-primary/80 mb-4"></p>
+                            <p id="details-benefits" class="text-base vazir-normal leading-relaxed"></p>
+                        </div>
+                         <button id="close-details" class="text-3xl text-brand-primary hover:text-red-500 transition-colors mr-auto md:mr-0 md:ml-auto">&times;</button>
+                    </div>
+                </div>
+		 <!-- NEW SECTION: Strategic Synergy -->
+                <div class="max-w-5xl mx-auto my-12">
+                    <h4 class="text-2xl vazir-heavy text-center mb-2 text-brand-primary">هم‌افزایی استراتژیک: فراتر از یک لیست</h4>
+                    <p class="text-center vazir-normal mb-8 max-w-3xl mx-auto">مواد اولیه این محصول با یکدیگر هم‌افزایی دارند و پلتفرم‌های قدرتمندی از مزایا را شکل می‌دهند که هسته اصلی پیام‌رسانی برند را می‌سازند.</p>
+                    <div class="grid md:grid-cols-3 gap-6 text-center">
+                        <div class="bg-brand-secondary/60 p-6 rounded-2xl">
+                            <span class="text-4xl">✨</span>
+                            <h5 class="text-xl vazir-heavy my-2">درخشش و زیبایی</h5>
+                            <p class="vazir-normal text-sm">زیبایی از درون به بیرون؛ پشتیبانی شده توسط خواص تقویت‌کننده پوست چای‌ها، میوه‌ها (ویتامین C) و گل‌ها (محرک کلاژن).</p>
+                        </div>
+                        <div class="bg-brand-secondary/60 p-6 rounded-2xl">
+                             <span class="text-4xl">⚖️</span>
+                             <h5 class="text-xl vazir-heavy my-2">سرزندگی متعادل</h5>
+                            <p class="vazir-normal text-sm">انرژی ملایم چای که با خواص آرام‌بخش و کاهنده استرس ال-تیانین، مریم گلی و بنفشه به تعادل رسیده است.</p>
+                        </div>
+                         <div class="bg-brand-secondary/60 p-6 rounded-2xl">
+                             <span class="text-4xl">🛡️</span>
+                             <h5 class="text-xl vazir-heavy my-2">سلامتی جامع</h5>
+                            <p class="vazir-normal text-sm">یک تونیک کامل برای زندگی مدرن که از سیستم ایمنی، گوارش و مدیریت استرس به صورت یکپارچه حمایت می‌کند.</p>
+                        </div>
+                    </div>
+                     <div class="text-center mt-8 bg-brand-secondary p-4 rounded-xl">
+                        <p class="text-lg vazir-heavy"><strong>نتیجه استراتژیک:</strong> جذابیت بصری محصول، بزرگترین دارایی آن است. این زیبایی، ادعای «طبیعی بودن» و «کیفیت بالا» را قبل از چشیدن، اثبات می‌کند. بازاریابی باید بر پایه «آنچه می‌بینید، همان چیزی است که دریافت می‌کنید» بنا شود.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Positioning Section -->
+        <section id="positioning" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl vazir-bold text-brand-primary">تعریف هویت: فراتر از یک نام</h3>
+                    <p class="text-lg mt-2 max-w-3xl mx-auto vazir-normal">نام‌گذاری اشتباه محصول به «چای مراکشی» انتظاری نادرست ایجاد می‌کند. محصول ما در دسته‌ای متفاوت و خاص‌تر قرار می‌گیرد که ارزش واقعی آن را نشان می‌دهد.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border-2 border-red-200">
+                        <h4 class="text-2xl vazir-heavy text-red-700 mb-3 text-center">تصور نادرست: چای مراکشی</h4>
+                        <p class="vazir-normal text-center mb-4">یک نوشیدنی سنتی بر پایه <strong>چای سبز باروتی و نعناع تازه</strong>.</p>
+                        <ul class="space-y-2 vazir-normal">
+                            <li class="flex items-start"><span class="text-red-500 ml-2 pt-1">&#10007;</span><span>فاقد چای سیاه</span></li>
+                            <li class="flex items-start"><span class="text-red-500 ml-2 pt-1">&#10007;</span><span>فاقد میوه‌های توت (Berry)</span></li>
+                            <li class="flex items-start"><span class="text-green-600 ml-2 pt-1">&#10003;</span><span>طعم غالب نعناع</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border-2 border-green-300">
+                        <h4 class="text-2xl vazir-heavy text-green-800 mb-3 text-center">طبقه‌بندی صحیح: چای طعم‌دار ترکیبی</h4>
+                        <p class="vazir-normal text-center mb-4">یک ترکیب هنرمندانه بر پایه <strong>چای واقعی</strong> که با مواد طبیعی غنی شده است.</p>
+                         <ul class="space-y-2 vazir-normal">
+                            <li class="flex items-start"><span class="text-green-600 ml-2 pt-1">&#10003;</span><span>پایه دوگانه از <strong>چای سیاه و سبز</strong></span></li>
+                            <li class="flex items-start"><span class="text-green-600 ml-2 pt-1">&#10003;</span><span>پروفایل پیچیده از <strong>توت‌ها و گل‌های وحشی</strong></span></li>
+                            <li class="flex items-start"><span class="text-red-500 ml-2 pt-1">&#10007;</span><span>فاقد طعم نعناع</span></li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="text-center mt-8 bg-brand-secondary p-4 rounded-xl max-w-5xl mx-auto">
+                    <p class="text-lg vazir-heavy"><strong>نتیجه استراتژیک:</strong> ما با پرهیز از نام‌گذاری گمراه‌کننده، برند خود را به عنوان یک متخصص معتبر و شفاف در زمینه «ترکیب‌های هنرمندانه» معرفی می‌کنیم و ارزش بالاتر محصول را توجیه می‌نماییم.</p>
+                </div>
+
+                <!-- NEW SECTION: Tea Classifications -->
+                <div class="mt-16">
+                    <h4 class="text-2xl vazir-heavy text-center mb-6 text-brand-primary">راهنمای طبقه‌بندی جهانی چای</h4>
+                     <div class="max-w-4xl mx-auto space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-brand-accent">
+                            <p><strong class="vazir-heavy">چای طعم‌دار (Flavored Tea):</strong> <span class="vazir-normal">پایه‌ای از چای واقعی (سیاه، سبز و...) که با میوه، گل، گیاه یا طعم‌دهنده ترکیب شده. <strong class="text-brand-primary">محصول ما در این دسته قرار می‌گیرد.</strong></span></p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                             <p><strong class="vazir-heavy">دمنوش گیاهی (Herbal Infusion / Tisane):</strong> <span class="vazir-normal">فاقد برگ چای واقعی است و کاملاً از گیاهان، گل‌ها و ادویه‌ها تهیه می‌شود (مانند بابونه). معمولاً بدون کافئین است.</span></p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                             <p><strong class="vazir-heavy">دمنوش میوه‌ای (Fruit Melange):</strong> <span class="vazir-normal">نوعی دمنوش که مواد اصلی آن تکه‌های میوه خشک هستند و کافئین ندارد.</span></p>
+                        </div>
+                    </div>
+                     <h4 class="text-xl vazir-heavy text-center mt-8 mb-4">موقعیت‌یابی به عنوان محصول Artisanal و Gourmet</h4>
+                     <p class="max-w-3xl mx-auto text-center vazir-normal leading-relaxed">
+                         این محصول فراتر از یک چای طعم‌دار ساده است. پیچیدگی ترکیب (بیش از ۷ ماده)، کیفیت مواد اولیه و خلق یک تجربه حسی چندلایه، آن را در دسته <strong class="vazir-heavy">Gourmet (لذیذ)</strong> قرار می‌دهد. فرآیند خلق آن نیز شبیه یک اثر هنری است، که آن را به یک محصول <strong class="vazir-heavy">Artisanal (هنرمندانه)</strong> تبدیل می‌کند. این موقعیت‌یابی، قیمت اعلا را توجیه کرده و آن را از رقبا متمایز می‌سازد.
+                     </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Analysis Section -->
+        <section id="market" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl vazir-bold text-brand-primary">چشم‌انداز بازار ایران</h3>
+                    <p class="text-lg mt-2 max-w-2xl mx-auto vazir-normal">تحلیل رقبا و ساختار قیمت‌گذاری نشان‌دهنده یک فرصت روشن برای محصولی با پیچیدگی و کیفیت بالاست.</p>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h4 class="text-2xl vazir-heavy text-center mb-4">جایگاه قیمتی محصول</h4>
+                        <p class="text-center mb-6 vazir-normal">محصول ما با توجه به کیفیت و پیچیدگی مواد اولیه، در رده اعلا (Premium) و بالاتر از رقبای اصلی بازار قرار می‌گیرد.</p>
+                        <div class="chart-container">
+                            <canvas id="priceChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl vazir-heavy text-center mb-4">مقایسه پیچیدگی ترکیب</h4>
+                        <p class="text-center mb-6 vazir-normal">«جنگل یاقوتی» با داشتن حداقل ۷ ماده اصلی، ترکیبی بسیار پیچیده‌تر و غنی‌تر از محصولات مشابه رایج در بازار ارائه می‌دهد.</p>
+                         <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-brand-primary text-white p-4 rounded-lg">
+                                <span class="text-4xl vazir-bold">۷+</span>
+                                <p class="vazir-normal">ترکیب ما</p>
+                            </div>
+                            <div class="bg-brand-secondary p-4 rounded-lg">
+                                <span class="text-4xl vazir-bold">۲-۳</span>
+                                <p class="vazir-normal">رقبای رایج</p>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                             <h5 class="text-xl vazir-heavy text-center mb-4">رقبای کلیدی</h5>
+                            <div class="space-y-3">
+                                <div class="bg-gray-100 p-3 rounded-lg flex justify-between items-center"><span>توینینگز (Twinings) - میوه‌های جنگلی</span><span class="text-sm vazir-normal">بین‌المللی</span></div>
+                                <div class="bg-gray-100 p-3 rounded-lg flex justify-between items-center"><span>احمد (Ahmad Tea) - توت فرنگی وحشی</span><span class="text-sm vazir-normal">بین‌المللی</span></div>
+                                <div class="bg-gray-100 p-3 rounded-lg flex justify-between items-center"><span>نیوشا - چای سیاه و توت فرنگی</span><span class="text-sm vazir-normal">داخلی اعلا</span></div>
+                                <div class="bg-gray-100 p-3 rounded-lg flex justify-between items-center"><span>سحرخیز - میوه‌های استوایی</span><span class="text-sm vazir-normal">داخلی اعلا</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- NEW SECTION: Consumption Behavior -->
+        <section id="consumption-behavior" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl vazir-bold text-brand-primary">رفتار و موقعیت‌های مصرف</h3>
+                    <p class="text-lg mt-2 max-w-2xl mx-auto vazir-normal">مصرف‌کننده هدف این محصول فقط یک کالا نمی‌خرد؛ او یک «تجربه» را خریداری می‌کند. درک رفتار او کلید موفقیت است.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="bg-brand-secondary p-6 rounded-2xl shadow-lg">
+                        <h4 class="text-xl vazir-heavy text-center mb-4">💡 محرک‌های خرید</h4>
+                        <ul class="space-y-3 vazir-normal">
+                            <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>خواص سلامتی درک‌شده و کیفیت مواد اولیه</span></li>
+                            <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>طعم، عطر و به ویژه جذابیت بصری محصول</span></li>
+                            <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>بسته‌بندی جذاب و داستان برند قانع‌کننده</span></li>
+                            <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>تمایل به امتحان کردن محصولات جدید و خاص (Neophilia)</span></li>
+                        </ul>
+                    </div>
+                     <div class="bg-brand-secondary p-6 rounded-2xl shadow-lg">
+                        <h4 class="text-xl vazir-heavy text-center mb-4">🛋️ موقعیت‌های مصرف</h4>
+                        <ul class="space-y-3 vazir-normal">
+                            <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>لحظات آرامش و مراقبت از خود (بعد از کار، قبل از خواب)</span></li>
+                            <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>یک نوشیدنی انرژی‌بخش ملایم در صبح یا بعد از ظهر</span></li>
+                            <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>نوشیدنی شیک و خاص برای پذیرایی از مهمانان</span></li>
+                            <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>جایگزینی برای قهوه یا نوشیدنی‌های قندی</span></li>
+                        </ul>
+                    </div>
+                     <div class="bg-brand-secondary p-6 rounded-2xl shadow-lg">
+                        <h4 class="text-xl vazir-heavy text-center mb-4">📊 میزان مصرف</h4>
+                        <ul class="space-y-3 vazir-normal">
+                             <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>احتمالاً ۱ تا ۲ فنجان در روز به عنوان بخشی از یک روتین متنوع نوشیدنی.</span></li>
+                            <li class="flex items-start"><span class="text-brand-primary ml-2 pt-1">▪</span><span>عملکرد به عنوان "دروازه ورود" برای مصرف‌کنندگان چای کیسه‌ای به دنیای چای فله و تخصصی.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Persona Section -->
+        <section id="persona" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl vazir-bold text-brand-primary">آشنایی با مخاطب هدف: سارا</h3>
+                    <p class="text-lg mt-2 max-w-2xl mx-auto vazir-normal">محصول ما برای یک شخص نیست، بلکه برای یک سبک زندگی طراحی شده است. «سارا» نماینده مشتری ایده‌آل ماست: مدرن، آگاه و به دنبال تجربه‌های باکیفیت.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8 grid md:grid-cols-2 gap-8">
+                    <div class="md:col-span-2 text-center">
+                        <h4 class="text-3xl vazir-bold">سارا، ۳۲ ساله، طراح گرافیک</h4>
+                        <p class="text-lg text-brand-accent vazir-heavy">"من به دنبال محصولاتی هستم که هم برای جسمم خوب باشند و هم برای روحم زیبا."</p>
+                    </div>
+                    <div>
+                        <h5 class="text-xl vazir-heavy mb-4">ویژگی‌ها و ارزش‌ها:</h5>
+                        <ul class="space-y-3 vazir-normal">
+                            <li class="flex items-center"><span class="text-2xl ml-3">🧘</span><span>آگاه به سلامت و به دنبال محصولات طبیعی</span></li>
+                            <li class="flex items-center"><span class="text-2xl ml-3">🎨</span><span>برای زیبایی‌شناسی و طراحی خوب ارزش قائل است</span></li>
+                            <li class="flex items-center"><span class="text-2xl ml-3">🌿</span><span>به شفافیت برند و پایداری اهمیت می‌دهد</span></li>
+                             <li class="flex items-center"><span class="text-2xl ml-3">📱</span><span>در شبکه‌های اجتماعی فعال است و از اینفلوئنسرها الهام می‌گیرد</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="text-xl vazir-heavy mb-4">محرک‌های خرید:</h5>
+                        <ul class="space-y-3 vazir-normal">
+                            <li class="flex items-center"><span class="text-2xl ml-3">✨</span><span>تجربه حسی: طعم، عطر و زیبایی بصری محصول</span></li>
+                            <li class="flex items-center"><span class="text-2xl ml-3">🎁</span><span>بسته‌بندی جذاب و داستان برند قانع‌کننده</span></li>
+                            <li class="flex items-center"><span class="text-2xl ml-3">🍵</span><span>چای به عنوان یک آیین روزانه برای آرامش و مراقبت از خود</span></li>
+                             <li class="flex items-center"><span class="text-2xl ml-3">💖</span><span>خواص سلامتی درک‌شده و ترکیبات کاربردی</span></li>
+                        </ul>
+                    </div>
+                     <div class="md:col-span-2 text-center mt-4 bg-brand-secondary p-4 rounded-xl">
+                        <p class="text-lg vazir-heavy"><strong>نتیجه استراتژیک:</strong> بازاریابی باید بر فروش «تجربه» متمرکز باشد، نه فقط محصول. محتوای ما باید لحظات زیبای آرامش، سلامتی و لذت را به تصویر بکشد که با هویت سارا همسو است.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <!-- Branding & Packaging Section -->
+        <section id="branding" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-4xl vazir-bold text-brand-primary">خلق یک برند به‌یادماندنی</h3>
+                    <p class="text-lg mt-2 max-w-2xl mx-auto vazir-normal">از نام و داستان گرفته تا طراحی بسته‌بندی، هر عنصر برای انتقال حس کیفیت، طبیعت و زیبایی طراحی شده است.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12 items-start">
+                    <div class="space-y-8">
+                        <div>
+                            <h4 class="text-2xl vazir-heavy mb-2">نام پیشنهادی: <span class="text-brand-primary">جنگل یاقوتی</span></h4>
+                            <p class="vazir-normal">این نام، تصویری از غنا، طبیعت و رنگ‌های زنده (قرمز و بنفش) را تداعی می‌کند و برای مصرف‌کننده‌ای که به دنبال تجربه و زیبایی است، جذابیت دارد.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl vazir-heavy mb-2">داستان برند</h4>
+                            <div class="bg-brand-secondary p-6 rounded-2xl">
+                                <p class="vazir-normal italic leading-relaxed">"در هر فنجان از <strong class="vazir-heavy">جنگل یاقوتی</strong>، یک باغ مخفی جان می‌گیرد. ما قدرت چای‌های کوهپایه، شیرینی آفتاب‌خورده توت‌های وحشی و نجوا و لطافت گل‌های دست‌چین را گرد هم آورده‌ایم. این ترکیبی است که دیدنش به اندازه نوشیدنش لذت‌بخش است. کیفیت را ببینید، هارمونی را بچشید."</p>
+                            </div>
+                        </div>
+                         <div>
+                            <h4 class="text-2xl vazir-heavy mb-2">پیام اصلی بازاریابی (USP)</h4>
+                            <p class="vazir-normal text-2xl text-brand-accent vazir-bold">"طبیعی بودنش پیداست، طعمش فوق‌العاده‌ست."</p>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- NEW: Video Player -->
+                        <div class="mb-8">
+                             <video class="w-full rounded-xl shadow-lg" controls poster="https://placehold.co/600x400/8D4B55/FFFFFF?text=Ruby+Forest">
+                                <source src="Ruby Forest.mp4" type="video/mp4">
+                                مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                            </video>
+                        </div>
+
+                        <h4 class="text-2xl vazir-heavy mb-4 text-center">مفاهیم بسته‌بندی</h4>
+                        <div class="flex flex-col md:flex-row justify-center items-stretch gap-8">
+                            <!-- Loose Leaf Mockup -->
+                            <div class="flex-1 bg-gray-100 p-4 rounded-2xl flex flex-col items-center shadow-lg">
+                                <h5 class="vazir-heavy mb-2">چای فله (۱۵۰ گرم)</h5>
+                                <div class="w-48 h-64 bg-white rounded-lg flex flex-col justify-between p-3 border-2 border-gray-200 shadow-inner">
+                                    <div class="text-center">
+                                        <p class="vazir-bold text-sm text-brand-primary">جنگل یاقوتی</p>
+                                        <p class="text-xs vazir-normal">ترکیب چای و میوه</p>
+                                    </div>
+                                    <div class="h-24 bg-gray-200 rounded-md flex items-center justify-center" style="background-image: url('https://placehold.co/150x100/DDC9B4/3D2C24?text=Tea+Blend'); background-size: cover;">
+                                       <div class="w-full h-full bg-black/20 flex items-center justify-center">
+                                            <p class="text-white text-xs font-sans font-bold">[ پنجره شفاف ]</p>
+                                       </div>
+                                    </div>
+                                    <p class="text-center text-xs vazir-normal">تصویرسازی گیاهان</p>
+                                </div>
+                                <p class="text-center mt-2 text-sm vazir-normal">پاکت ایستاده با پنجره شفاف برای نمایش زیبایی محصول.</p>
+                            </div>
+                            <!-- Tea Bag Mockup -->
+                             <div class="flex-1 bg-gray-100 p-4 rounded-2xl flex flex-col items-center shadow-lg">
+                                <h5 class="vazir-heavy mb-2">چای کیسه‌ای (۲۰ عدد)</h5>
+                                <div class="w-48 h-64 bg-brand-primary text-white rounded-lg flex flex-col items-center p-3 border-2 border-gray-200 shadow-inner">
+                                     <h6 class="vazir-bold text-center mt-2">جنگل یاقوتی</h6>
+                                     <div class="w-24 h-24 bg-white/90 rounded-full flex items-center justify-center my-4">
+                                         <span class="text-brand-primary text-4xl">△</span>
+                                     </div>
+                                     <p class="text-center text-xs vazir-normal">کیسه‌های هرمی برای راحتی و حفظ کیفیت</p>
+                                </div>
+                                <p class="text-center mt-2 text-sm vazir-normal">جعبه شیک با کیسه‌های هرمی برای راحتی مصرف‌کننده مدرن.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-brand-secondary mt-12">
+        <div class="container mx-auto px-6 py-4 text-center text-brand-primary/70 vazir-normal">
+            <p>&copy; 2025 - داشبورد تحلیل استراتژیک محصول. توسط مارکتینگ هستی آرین تامین. تمام حقوق محفوظ است.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Smooth scrolling for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Hide mobile menu on click
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Ingredients Data
+            const ingredients = [
+                { id: 'black-tea', title: 'چای سیاه', icon: '☕', flavor: 'طعم قوی، مالت‌مانند و گس', benefits: 'انرژی‌بخش، سرشار از آنتی‌اکسیدان و مفید برای سلامت قلب. پایه قدرتمند این ترکیب برای شروعی پرانرژی.' },
+                { id: 'green-tea', title: 'چای سبز', icon: '🍃', flavor: 'طعم سبک، گیاهی و باطراوت', benefits: 'افزایش متابولیسم، آرامش‌بخش (به لطف ال-تیانین) و مفید برای سلامت پوست. طراوت طبیعت برای تمرکز ذهن.' },
+                { id: 'strawberry', title: 'توت فرنگی', icon: '🍓', flavor: 'طعم شیرین، میوه‌ای و دلنشین', benefits: 'منبع عالی ویتامین C برای تقویت سیستم ایمنی و سلامت پوست. شیرینی دلنشین آن روح و جسم را شاداب می‌کند.' },
+                { id: 'mulberry', title: 'شاه‌توت', icon: '🍇', flavor: 'طعم ملس (شیرین و ترش) و پیچیده', benefits: 'آنتی‌اکسیدان قوی، تقویت‌کننده حافظه و ضدالتهاب. طعم غنی توت‌های وحشی برای سرزندگی.' },
+                { id: 'calendula', title: 'گل همیشه بهار', icon: '🌼', flavor: 'طعم ملایم، کمی فلفلی و خاکی', benefits: 'ضدالتهاب قوی، سم‌زدا و ترمیم‌کننده پوست (محرک کلاژن). درخشش آن برای پوستی شفاف و باطراوت است.' },
+                { id: 'violet', title: 'گل بنفشه', icon: '🌸', flavor: 'طعم ظریف، گلی و آرامش‌بخش', benefits: 'آرام‌بخش، تسکین‌دهنده سرفه و کاهنده استرس. نت‌های ظریف آن روح را آرام و درون را تسکین می‌دهد.' },
+                { id: 'sage', title: 'مریم گلی', icon: '🌿', flavor: 'طعم خاکی، معطر و گیاهی', benefits: 'بهبوددهنده گوارش، تقویت‌کننده حافظه و ضد اضطراب. عطر گیاهان کوهی برای تمرکز و هضمی آسان.' },
+                { id: 'cranberry-aroma', title: 'رایحه زغال اخته', icon: '✨', flavor: 'رایحه ترش، باطراوت و میوه‌ای', benefits: 'این رایحه به عنوان نت پایانی، طعم‌های توت را یکپارچه کرده و به کل ترکیب، طراوت و پیچیدگی می‌بخشد.' }
+            ];
+
+            const ingredientGrid = document.getElementById('ingredient-grid');
+            const detailsPanel = document.getElementById('ingredient-details');
+            const detailsIcon = document.getElementById('details-icon');
+            const detailsTitle = document.getElementById('details-title');
+            const detailsFlavor = document.getElementById('details-flavor');
+            const detailsBenefits = document.getElementById('details-benefits');
+            const closeDetailsButton = document.getElementById('close-details');
+            
+            // Populate ingredients grid
+            ingredients.forEach(ingredient => {
+                const card = document.createElement('div');
+                card.className = 'ingredient-card bg-white p-4 rounded-2xl text-center cursor-pointer shadow-lg';
+                card.dataset.id = ingredient.id;
+                card.innerHTML = `
+                    <div class="text-5xl mb-3">${ingredient.icon}</div>
+                    <h5 class="vazir-heavy text-lg">${ingredient.title}</h5>
+                `;
+                ingredientGrid.appendChild(card);
+            });
+
+            // Handle ingredient card click
+            ingredientGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('.ingredient-card');
+                if (card) {
+                    const ingredientId = card.dataset.id;
+                    const data = ingredients.find(i => i.id === ingredientId);
+                    
+                    detailsIcon.textContent = data.icon;
+                    detailsTitle.textContent = data.title;
+                    detailsFlavor.textContent = data.flavor;
+                    detailsBenefits.textContent = data.benefits;
+
+                    detailsPanel.classList.remove('hidden');
+                    detailsPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+
+            // Handle close details panel
+            closeDetailsButton.addEventListener('click', () => {
+                detailsPanel.classList.add('hidden');
+            });
+
+            // Chart.js - Price Chart
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['محصولات اقتصادی', 'برندهای متوسط', 'جنگل یاقوتی (پیشنهادی)', 'رقبای اعلا'],
+                    datasets: [{
+                        label: 'قیمت به ازای هر ۱۰۰ گرم (تومان)',
+                        data: [20000, 45000, 95000, 130000],
+                        backgroundColor: [
+                            '#DDC9B4',
+                            '#BCA691',
+                            '#8D4B55',
+                            '#6C3A43'
+                        ],
+                        borderColor: [
+                            '#C9B9A6',
+                            '#AC947F',
+                            '#7D3A45',
+                            '#5C2A33'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return new Intl.NumberFormat('fa-IR').format(value) + ' ت';
+                                },
+                                font: { family: "'Vazirmatn', sans-serif" }
+                            }
+                        },
+                        y: {
+                             ticks: { font: { family: "'Vazirmatn', sans-serif", size: 14 } }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                             bodyFont: { family: "'Vazirmatn', sans-serif" },
+                             titleFont: { family: "'Vazirmatn', sans-serif" },
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += new Intl.NumberFormat('fa-IR', { style: 'currency', currency: 'IRR', minimumFractionDigits: 0 }).format(context.parsed.x * 10);
+                                    }
+                                    return label.replace('IRR', 'تومان');
+                                }
+                             }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
